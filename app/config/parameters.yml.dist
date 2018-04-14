@@ -9,6 +9,7 @@ parameters:
     database_password: ~
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.project_dir%/var/data/data.sqlite'
+    user_image_directory: '%kernel.root_dir%/../web/uploads/user_images'
 
     mailer_transport: smtp
     mailer_host: 127.0.0.1
