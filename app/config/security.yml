@@ -1,24 +1,26 @@
-# To get started with security, check out the documentation:
-# https://symfony.com/doc/current/security.html
 security:
-
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
-
-    firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-
         main:
-            anonymous: ~
-            # activate different ways to authenticate
+            entity: { class: AppBundle:User, property: login }
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    encoders:
+        AppBundle\Entity\User: bcrypt
+    firewalls:
+        main:
+            pattern: /.* #указываем встроенному фаерволу Symfony маску по которой защищается наш сайт
+            form_login:
+                check_path: /login #указываем ссылку на страницу, на которой будет находиться форма авторизации
+                login_path: /login #указываем путь по которому будет проходить проверка введенных данных и авторизация его в системе
+                default_target_path: / #указываем на страницу которую хотим перейти после авторизации по умолчанию
+            logout:
+                path:   /logout #указываем путь по которому пользователь может выйти из системы.
+                target: /login
+            security: true
+            anonymous: true #разрешаем неавторизованным пользователям находиться на нашем сайте и гулять по разрешенным ссылкам
+    access_control:
+          - { path: /user/new, role: IS_AUTHENTICATED_ANONYMOUSLY }
+          - { path: /user/.*, role: ROLE_ADMIN }
+          - { path: /profile, role: ROLE_USER }
+          - { path: /login/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+          - { path: /login_check/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+          - { path: /article/*, role: ROLE_USER }

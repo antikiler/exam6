@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Страница просмотра поста</h1>
+    <table width="800px" border="1">
+        <thead>
+        <tr>
+            <th>Название поста:</th>
+            <th>Контент поста:</th>
+            <th>Автор:</th>
+            <th>Аватар автора:</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if(article) %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{{ article.user.name }}</td>
+                <td><img src="{{ asset(user_image_directory ~ article.user.avatar) }}" style="width:100px;height: 100px;"></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Нет Статей</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    <h1>Список коментария поста</h1>
+    <table width="800px" border="1">
+        <thead>
+        <tr>
+            <th>Автор:</th>
+            <th>Аватар автора:</th>
+            <th>Коментарии:</th>
+            <th>действие:</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for comment in article.comments %}
+            <tr>
+                <td>{{ comment.user.name }}</td>
+                <td><img src="{{ asset(user_image_directory ~ comment.user.avatar) }}" style="width:65px;height: 65px;"></td>
+                <td>{{ comment.content }}</td>
+                <td>
+                    {% if(app.user.id == comment.user.id) %}
+                        {% set form = commentDeleteForm.createView %}
+                        {{ form_start(form, {'action' : path('commentDelete', {'id' : comment.id,'id_article':article.id})}) }}
+                        {{ form_widget(form) }}
+                        {{ form_end(form) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>У данного поста нет коментариев</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h1>Добавить коментарии</h1>
+    {{ form_start(formComment) }}
+    {{ form_widget(formComment) }}
+    {{ form_end(formComment) }}
+{% endblock %}

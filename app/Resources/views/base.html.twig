@@ -2,11 +2,37 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}php_group_3 exam_6 Maksim limarev!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <style>
+            .menu {
+                list-style: none;
+            }
+            .menu li{
+                display: inline-block;
+                margin-left: 24px;
+            }
+            table tr td {
+                cursor: pointer;
+            }
+        </style>
     </head>
     <body>
+        <div class="header">
+            <ul class="menu">
+                <li><a href="{{ path('homePage') }}">Главная</a></li>
+                <li><a href="{{ path('articleList') }}">Блог</a></li>
+            {% if(app.user) %}
+                <li><span>Привет, {{ app.user.name }}</span></li>
+                <li><a href="{{ path('logout') }}">Выход</a></li>
+            {% else %}
+                <li><a href="{{ path('app_basic_login') }}">Вход</a></li>
+                <li><a href="{{ path('userNew') }}">регистрация</a></li>
+            {% endif %}
+            </ul>
+
+        </div>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

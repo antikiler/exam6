@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}AppBundle:Basic:login{% endblock %}
+
+{% block body %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('app_basic_login') }}" method="post">
+        <label for="login">Логин:</label>
+        <input type="text" id="login" name="_username" value="{{ last_username }}" />
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="_password" />
+        <button type="submit">Войти</button>
+    </form>
+{% endblock %}

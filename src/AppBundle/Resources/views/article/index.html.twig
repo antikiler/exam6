@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Список постов</h1>
+    <a href="{{ path('articleNew') }}"><button>Добавить Новость</button></a><br><br>
+    <table width="800px" border="1">
+        <thead>
+        <tr>
+            <th>Название поста:</th>
+            <th>Контент поста:</th>
+            <th>Автор:</th>
+            <th>Аватар автора:</th>
+            <th>Действие:</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr onclick="window.location='{{ path('articleShow',{'id':article.id})}}'">
+                <td>{{ article.title }}</td>
+                <td>{{ article.content }}</td>
+                <td>{{ article.user.name }}</td>
+                <td><img src="{{ asset(user_image_directory ~ article.user.avatar) }}" style="width:100px;height: 100px;"></td>
+                <td>
+                    {% if(app.user.id == article.user.id) %}
+                        {% set form = articleDeleteForm.createView %}
+                        {{ form_start(form, {'action' : path('articleDelete', {'id' : article.id})}) }}
+                        {{ form_widget(form) }}
+                        {{ form_end(form) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Нет Статей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

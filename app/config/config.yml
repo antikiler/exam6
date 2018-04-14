@@ -35,6 +35,10 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+            user_image_directory: 'uploads/user_images/'
+    form_themes:
+           - 'form_table_layout.html.twig'
 
 # Doctrine Configuration
 doctrine:
